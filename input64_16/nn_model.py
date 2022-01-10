@@ -38,10 +38,31 @@ class nnConv(nn.Module):
         x = self.model(x)
         return x
 
+class nnRNN(nn.Module):
+    def __init__(self):
+        super(nnRNN, self).__init__()
+        self.rnn = nn.RNN(
+            input_size=1,
+            hidden_size=16,  # RNN隐藏神经元个数
+            num_layers=1,  # RNN隐藏层个数
+            nonlinearity='relu',
+            batch_first=True
+        )
+        self.out = nn.Linear(64,16)
+
+    def forward(self, x):
+        # x (time_step, batch_size, input_size)
+        # h (n_layers, batch, hidden_size)
+        # out (time_step, batch_size, hidden_size)
+        output, h_n = self.rnn(x)
+        return output
+
 if __name__ == '__main__':
     nnline = nnLinear()
     nnconv = nnConv()
-    input = torch.ones((1,64))
+    nnrnn = nnRNN()
+    input = torch.rand((2,64))  # batch_size, input_size
+    print(input)
     print(input.shape)
 
     output = nnline(input)
@@ -49,3 +70,11 @@ if __name__ == '__main__':
 
     output = nnconv(input)
     print(output.shape)
+
+    input = input.view(2,64,-1)   # 要使用batch_first=True
+    print(input.shape)
+    output = nnrnn(input)
+    output = output[:, -1, :]
+    print(output.shape)  # 取出最后一个，其形式为batch_size * output
+    print(output)
+

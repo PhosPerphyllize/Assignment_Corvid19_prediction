@@ -34,9 +34,10 @@ class MyData(Dataset):
     def __len__(self):
         return len(self.list)
 
+
 if __name__ == '__main__':
-    trainset = MyData(root="../../Corvid19Dataset/Dataset64_16.csv", train=True)
-    testset = MyData(root="../../Corvid19Dataset/Dataset64_16.csv", train=False)
+    trainset = MyData(root="../../Corvid19Dataset/Dataset64_16_nor.csv", train=True)
+    testset = MyData(root="../../Corvid19Dataset/Dataset64_16_nor.csv", train=False)
     # print(trainset[0])
     # print(testset[0])
     # print(len(testset))
@@ -46,7 +47,7 @@ if __name__ == '__main__':
     print(len(input))
     print(len(output))
 
-    loader = DataLoader(testset, batch_size=4, shuffle=True)
+    loader = DataLoader(testset, batch_size=4, shuffle=True)  # 注意batch_size 不要超过8，这是验证集，大小只有9
     for data in loader:
         input,output = data
         print(input)
