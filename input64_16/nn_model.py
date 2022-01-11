@@ -41,45 +41,55 @@ class nnConv(nn.Module):
 class nnRNN(nn.Module):
     def __init__(self):
         super(nnRNN, self).__init__()
-        self.rnn = nn.RNN(
-            input_size=1,
-            hidden_size=16,  # RNN隐藏神经元个数
-            num_layers=1,  # RNN隐藏层个数
-            nonlinearity='relu',
-            batch_first=True
-        )
+        input_size = 1
+        hidden_size = 16
+        num_layers = 1
+        self.rnn = nn.RNN(input_size=input_size,hidden_size=hidden_size,num_layers=num_layers,
+                          nonlinearity='relu',batch_first=True)
+        linear_in = hidden_size*64
+        self.out = nn.Linear(linear_in, 16)
 
     def forward(self, x):
-        # x (time_step, batch_size, input_size)
-        # h (n_layers, batch, hidden_size)
-        # out (time_step, batch_size, hidden_size)
-        output, h_n = self.rnn(x)
-        return output
+        # x (batch_size, input_size)
+        # rnn_in (batch_size, seq_len, input_size)
+        # out (batch_size, hidden_size)
+        b, _ = x.size()
+        x = x.reshape(b,64,-1)   # 要使用batch_first=True
+        x, _ = self.rnn(x)
+        b, s, n = x.size()
+        x = x.reshape(b, -1)
+        x = self.out(x)
+        return x
 
 class nnLSTM(nn.Module):
     def __init__(self):
         super(nnLSTM, self).__init__()
-        self.lstm = nn.LSTM(
-            input_size=1,
-            hidden_size=16,  # 隐藏神经元个数
-            num_layers=1,
-            batch_first=True
-        )
+        input_size = 1
+        hidden_size = 16
+        num_layers = 1
+        self.lstm = nn.LSTM(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers, batch_first=True)
+        linear_in = hidden_size*64
+        self.out = nn.Linear(linear_in, 16)
 
     def forward(self, x):
-        # x (time_step, batch_size, input_size)
-        # h (n_layers, batch, hidden_size)
-        # out (time_step, batch_size, hidden_size)
-        output, hc_n = self.lstm(x)
-        return output
+        # x (batch_size, input_size)
+        # rnn_in (batch_size, seq_len, input_size)
+        # out (batch_size, hidden_size)
+        b, _ = x.size()
+        x = x.reshape(b, 64, -1)  # 要使用batch_first=True
+        x, _ = self.lstm(x)
+        b,s,n = x.size()
+        x = x.reshape(b,-1)
+        x = self.out(x)
+        return x
 
 if __name__ == '__main__':
     nnline = nnLinear()
     nnconv = nnConv()
     nnrnn = nnRNN()
     nnlstm = nnLSTM()
-    input = torch.rand((8,64))  # batch_size, input_size
-    # print(input)
+    input = torch.rand((4,64))  # batch_size, input_size
+    print(input)
     print(input.shape)
 
     output = nnline(input)
@@ -88,15 +98,10 @@ if __name__ == '__main__':
     output = nnconv(input)
     print(output.shape)
 
-    input = input.view(8,64,-1)   # 要使用batch_first=True
-    print(input.shape)
     output = nnrnn(input)
-    output = output[:, -1, :]
-    print(output.shape)  # 取出最后一个，其形式为batch_size * output
-    # print(output)
+    print(output.shape)
+    print(output)
 
     output = nnlstm(input)
-    output = output[:, -1, :]
-    print(output.shape)  # 取出最后一个，其形式为batch_size * output
-    # print(output)
-
+    print(output.shape)
+    print(output)

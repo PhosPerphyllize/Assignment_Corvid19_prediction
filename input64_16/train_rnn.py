@@ -7,7 +7,7 @@ from read_data import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-writer = SummaryWriter("../../Corvid19log/Input64_16/nnrnn")
+writer = SummaryWriter("../../Corvid19log/Input64_16/nnrnn2")
 model_save_path = "nnrnn_save"
 if not os.path.exists(model_save_path):
     os.makedirs(model_save_path)
@@ -46,12 +46,11 @@ for i in range(epoch):
 
     for data in train_dataloader:
         input, target = data
-        input = input.view(train_batch_size, 64, -1)
         input = input.to(device)
         target = target.to(device)
 
         output = nnrnn(input)
-        loss = loss_fun(output[:,-1,:], target)
+        loss = loss_fun(output, target)
         loss_train += loss
 
         # 优化器
@@ -71,12 +70,11 @@ for i in range(epoch):
         loss_test = 0
         for data in test_dataloader:
             input, target = data
-            input = input.view(test_batch_size, 64, -1)
             input = input.to(device)
             target = target.to(device)
 
             output = nnrnn(input)
-            loss_test += loss_fun(output[:,-1,:], target)
+            loss_test += loss_fun(output, target)
 
             test_num += 1
 

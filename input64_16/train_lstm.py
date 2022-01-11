@@ -27,7 +27,7 @@ nnlstm = nnLSTM()
 nnlstm.to(device)
 
 # 损失函数与优化器
-loss_fun = nn.L1Loss()
+loss_fun = nn.MSELoss()
 loss_fun.to(device)
 
 learn_rate = 0.001
@@ -35,7 +35,7 @@ nnlstm_optim = torch.optim.Adam(nnlstm.parameters(), lr=learn_rate)
 
 train_num = 0
 test_num = 0
-epoch = 3000
+epoch = 2500
 
 start_time = time.time()   # 记录时间
 for i in range(epoch):
@@ -46,12 +46,11 @@ for i in range(epoch):
 
     for data in train_dataloader:
         input, target = data
-        input = input.view(train_batch_size, 64, -1)
         input = input.to(device)
         target = target.to(device)
 
         output = nnlstm(input)
-        loss = loss_fun(output[:,-1,:], target)
+        loss = loss_fun(output, target)
         loss_train += loss
 
         # 优化器
@@ -71,19 +70,18 @@ for i in range(epoch):
         loss_test = 0
         for data in test_dataloader:
             input, target = data
-            input = input.view(test_batch_size, 64, -1)
             input = input.to(device)
             target = target.to(device)
 
             output = nnlstm(input)
-            loss_test += loss_fun(output[:,-1,:], target)
+            loss_test += loss_fun(output, target)
 
             test_num += 1
 
         print("In epoch {}, TestSet test loss: {}".format(i + 1, loss_test))
         writer.add_scalar(tag="epoch(TestSet) vs loss", scalar_value=loss_test, global_step=i + 1)
 
-    if i != 0 and (i+1) % 600 == 0:
+    if i != 0 and (i+1) % 500 == 0:
         path = os.path.join( model_save_path,("nnlstm_model{}.pth".format(i + 1)) )
         torch.save(nnlstm, path)  # 自动保存
         end_time = time.time()
