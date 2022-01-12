@@ -43,11 +43,15 @@ class nnRNN(nn.Module):
         super(nnRNN, self).__init__()
         input_size = 1
         hidden_size = 16
-        num_layers = 1
+        num_layers = 4
         self.rnn = nn.RNN(input_size=input_size,hidden_size=hidden_size,num_layers=num_layers,
                           nonlinearity='relu',batch_first=True)
         linear_in = hidden_size*64
-        self.out = nn.Linear(linear_in, 16)
+        self.linear = nn.Sequential(
+            nn.Linear(linear_in, 128),  # 1024-128
+            nn.ReLU(inplace=True),
+            nn.Linear(128, 16),
+        )
 
     def forward(self, x):
         # x (batch_size, input_size)
@@ -58,7 +62,7 @@ class nnRNN(nn.Module):
         x, _ = self.rnn(x)
         b, s, n = x.size()
         x = x.reshape(b, -1)
-        x = self.out(x)
+        x = self.linear(x)
         return x
 
 class nnLSTM(nn.Module):
@@ -66,10 +70,14 @@ class nnLSTM(nn.Module):
         super(nnLSTM, self).__init__()
         input_size = 1
         hidden_size = 16
-        num_layers = 1
+        num_layers = 4
         self.lstm = nn.LSTM(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers, batch_first=True)
         linear_in = hidden_size*64
-        self.out = nn.Linear(linear_in, 16)
+        self.linear = nn.Sequential(
+            nn.Linear(linear_in, 128),  # 1024-128
+            nn.ReLU(inplace=True),
+            nn.Linear(128, 16),
+        )
 
     def forward(self, x):
         # x (batch_size, input_size)
@@ -80,7 +88,7 @@ class nnLSTM(nn.Module):
         x, _ = self.lstm(x)
         b,s,n = x.size()
         x = x.reshape(b,-1)
-        x = self.out(x)
+        x = self.linear(x)
         return x
 
 if __name__ == '__main__':
@@ -88,7 +96,7 @@ if __name__ == '__main__':
     nnconv = nnConv()
     nnrnn = nnRNN()
     nnlstm = nnLSTM()
-    input = torch.rand((4,64))  # batch_size, input_size
+    input = torch.rand((2,64))  # batch_size, input_size
     print(input)
     print(input.shape)
 
@@ -98,10 +106,12 @@ if __name__ == '__main__':
     output = nnconv(input)
     print(output.shape)
 
+    print("rnn: ")
     output = nnrnn(input)
     print(output.shape)
     print(output)
 
+    print("lstm: ")
     output = nnlstm(input)
     print(output.shape)
     print(output)

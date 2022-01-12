@@ -7,8 +7,8 @@ from read_data import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-writer = SummaryWriter("../../Corvid19log/Input64_16/nnrnn2")
-model_save_path = "nnrnn_save"
+writer = SummaryWriter("../../Corvid19log/Input64_16/nnrnn/rnn4_linear2")
+model_save_path = "nnrnn_save/rnn4_linear2"
 if not os.path.exists(model_save_path):
     os.makedirs(model_save_path)
 
@@ -81,7 +81,7 @@ for i in range(epoch):
         print("In epoch {}, TestSet test loss: {}".format(i + 1, loss_test))
         writer.add_scalar(tag="epoch(TestSet) vs loss", scalar_value=loss_test, global_step=i + 1)
 
-    if i != 0 and (i+1) % 600 == 0:
+    if i != 0 and (i+1) % 500 == 0:
         path = os.path.join( model_save_path,("nnrnn_model{}.pth".format(i + 1)) )
         torch.save(nnrnn, path )  # 自动保存
         end_time = time.time()

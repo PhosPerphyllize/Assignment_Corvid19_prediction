@@ -7,8 +7,8 @@ from read_data import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-writer = SummaryWriter("../../Corvid19log/Input64_16/nnlstm")
-model_save_path = "nnlstm_save"
+writer = SummaryWriter("../../Corvid19log/Input64_16/nnlstm/lstm4_linear2")
+model_save_path = "nnlstm_save/lstm4_linear2"
 if not os.path.exists(model_save_path):
     os.makedirs(model_save_path)
 
@@ -35,7 +35,7 @@ nnlstm_optim = torch.optim.Adam(nnlstm.parameters(), lr=learn_rate)
 
 train_num = 0
 test_num = 0
-epoch = 2500
+epoch = 3000
 
 start_time = time.time()   # 记录时间
 for i in range(epoch):
