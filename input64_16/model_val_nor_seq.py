@@ -4,8 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from read_data import *
 
-# model_path = "nnrnn_save/nnrnn_model1800.pth"
-model_path = "nnlstm_save/nnlstm_model1200.pth"
+model_path = "nnrnn_save/rnn1_linear1/nnrnn_model600.pth"
+# model_path = "nnlstm_save/nnlstm_model1200.pth"
 nn_model = torch.load(model_path)
 nn_model.to("cpu")
 
@@ -21,20 +21,19 @@ poland_case = trainset[6]
 russia_case = trainset[7]
 us_case = trainset[8]
 
-input,target = us_case
+input,target = germany_case
 
 a = input[0]
 b = input[-1]
 
 input = input - a
 input = input/(b-a)
-input = input.view(1,64,-1)   # 转格式
+input = input.view(1,-1)   # 转格式
 
 print(type(input))
 print(input)
 
 output = nn_model(input)
-output = output[:,-1,:]
 
 print(type(output))
 print(output)
