@@ -59,7 +59,7 @@ for i in range(epoch):
         train_num += 1
         if train_num % 500 == 0:
             print("In train num {}, loss: {}".format(train_num, loss))
-        writer.add_scalar(tag="train_num vs loss", scalar_value=loss, global_step=train_num)
+            writer.add_scalar(tag="train_num vs loss", scalar_value=loss, global_step=train_num)
     print("In epoch {}, TrainSet train loss: {}".format(i + 1, loss_train))
     writer.add_scalar(tag="epoch(TrainSet) vs loss", scalar_value=loss_train, global_step=i + 1)
 
