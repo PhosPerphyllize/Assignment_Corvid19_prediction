@@ -27,7 +27,7 @@ nnrnn = nnRNN()
 nnrnn.to(device)
 
 # 损失函数与优化器
-loss_fun = nn.L1Loss()
+loss_fun = nn.MSELoss()
 loss_fun.to(device)
 
 learn_rate = 0.001
