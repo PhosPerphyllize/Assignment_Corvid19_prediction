@@ -7,8 +7,8 @@ from read_data import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-writer = SummaryWriter("../../Corvid19log/Input64_16/nnline_train/linear6")
-model_save_path = "nnline_save/linear6"
+writer = SummaryWriter("../../Corvid19log/Input64_16/nnline_train/linear6_drop")
+model_save_path = "nnline_save/linear6_drop"
 if not os.path.exists(model_save_path):
     os.makedirs(model_save_path)
 
@@ -57,9 +57,9 @@ for i in range(epoch):
         nnline_optim.step()
 
         train_num += 1
-        if train_num % 500 == 0:
+        if train_num % 800 == 0:
             print("In train num {}, loss: {}".format(train_num, loss))
-            writer.add_scalar(tag="train_num vs loss", scalar_value=loss, global_step=train_num)
+            # writer.add_scalar(tag="train_num vs loss", scalar_value=loss, global_step=train_num)
     print("In epoch {}, TrainSet train loss: {}".format(i + 1, loss_train))
     writer.add_scalar(tag="epoch(TrainSet) vs loss", scalar_value=loss_train, global_step=i + 1)
 
@@ -82,7 +82,8 @@ for i in range(epoch):
     if i != 0 and (i+1) % 400 == 0:
         path = os.path.join( model_save_path,("nnline_model{}.pth".format(i + 1)) )
         torch.save(nnline, path )  # 自动保存
-        end_time = time.time()
-        print("--------Time consume: {}".format(end_time - start_time))
+
+    end_time = time.time()
+    print("--------Time consume: {}".format(end_time - start_time))
 
 writer.close()
