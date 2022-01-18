@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from read_data import *
 
-model_path = "nnline_save/linear6/nnline_model4000.pth"
+model_path = "nnline_save/linear6_drop/nnline_model4000.pth"
 # model_path = "nnconv_save/conv2_linear2/nnconv_model3000.pth"
 nn_model = torch.load(model_path)
 print(nn_model)
@@ -23,7 +23,7 @@ poland_case = trainset[6]
 russia_case = trainset[7]
 us_case = trainset[8]
 
-input,target = us_case
+input,target = finland_case
 
 a = input[0]
 b = input[-1]

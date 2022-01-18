@@ -7,8 +7,8 @@ from read_data import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-writer = SummaryWriter("../../Corvid19log/Input64_16/nnline_train/linear6_drop")
-model_save_path = "nnline_save/linear6_drop"
+writer = SummaryWriter("../../Corvid19log/Input64_16/nnline_train/linear5_drop")
+model_save_path = "nnline_save/linear5_drop"
 if not os.path.exists(model_save_path):
     os.makedirs(model_save_path)
 
