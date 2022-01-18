@@ -17,7 +17,7 @@ poland_case = trainset[207]
 japan_case = trainset[150]
 finland_case = trainset[113]
 
-input,target = finland_case
+input,target = japan_case
 output = nn_model(input)
 
 # x = np.arange(0,701)
@@ -40,8 +40,8 @@ for i in range(len(output)):
 x = range(1,len(target)+1)
 plt.figure(1)
 plt.figure(figsize=(10,6), dpi=100)  # 设置画板属性
-plt.plot(x,y_ture, label="predict", color="b")
-plt.plot(x,y_hap, label="ture", color="r")
+plt.plot(x,y_ture, label="predict", color="r")
+plt.plot(x,y_hap, label="ture", color="b")
 plt.xlabel("Day")
 plt.ylabel("Confirm Case")
 plt.title("Corvid19 case")
