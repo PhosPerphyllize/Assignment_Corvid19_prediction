@@ -6,10 +6,10 @@ class nnLinear(nn.Module):
         super(nnLinear, self).__init__()
         self.model = nn.Sequential(
             nn.Linear(64, 128),
-            # nn.LeakyReLU(inplace=True),
-            # nn.Linear(256, 64),
             nn.LeakyReLU(inplace=True),
-            nn.Linear(128, 16),
+            nn.Linear(128, 64),
+            nn.LeakyReLU(inplace=True),
+            nn.Linear(64, 16),
         )
 
     def forward(self, x):
