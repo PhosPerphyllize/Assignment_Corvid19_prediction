@@ -5,19 +5,11 @@ class nnLinear(nn.Module):
     def __init__(self):
         super(nnLinear, self).__init__()
         self.model = nn.Sequential(
-            nn.Linear(64, 256),
-            nn.Dropout(),
+            nn.Linear(64, 128),
             nn.LeakyReLU(inplace=True),
-            nn.Linear(256, 256),
-            nn.Dropout(),
+            nn.Linear(128, 64),
             nn.LeakyReLU(inplace=True),
-            nn.Linear(256, 64),
-            nn.Dropout(),
-            nn.LeakyReLU(inplace=True),
-            nn.Linear(64, 32),
-            nn.Dropout(),
-            nn.LeakyReLU(inplace=True),
-            nn.Linear(32, 16),
+            nn.Linear(64, 16),
         )
 
     def forward(self, x):
