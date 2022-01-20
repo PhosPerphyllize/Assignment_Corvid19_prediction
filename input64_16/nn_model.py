@@ -5,10 +5,6 @@ class nnLinear(nn.Module):
     def __init__(self):
         super(nnLinear, self).__init__()
         self.model = nn.Sequential(
-            nn.Linear(64, 128),
-            nn.LeakyReLU(inplace=True),
-            nn.Linear(128, 64),
-            nn.LeakyReLU(inplace=True),
             nn.Linear(64, 16),
         )
 

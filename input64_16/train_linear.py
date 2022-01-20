@@ -7,11 +7,12 @@ from read_data import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-writer = SummaryWriter("../../Corvid19log/Input64_16/nnline_train/linear3")
-model_save_path = "nnline_save/linear3"
+writer = SummaryWriter("../../Corvid19log/Input64_16/nnline_train/linear1")
+model_save_path = "nnline_save/linear1"
 
 if not os.path.exists(model_save_path):
     os.makedirs(model_save_path)
+
 
 root = "../../Corvid19Dataset/Dataset64_16_nor.csv"
 trainset = MyData(root=root, train=True)
