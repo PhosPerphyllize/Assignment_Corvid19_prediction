@@ -20,8 +20,10 @@ germany_case = trainset[5]
 poland_case = trainset[6]
 russia_case = trainset[7]
 us_case = trainset[8]
+iran_case = trainset[9]
+brazil_case = trainset[10]
 
-input,target = russia_case
+input,target = iran_case
 
 a = input[0]
 b = input[-1]
